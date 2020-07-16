@@ -1,0 +1,7 @@
+<div>
+  <select class="btn btn-primary" (change)="onValueChange($event.target.value)">
+    <option [value]="pair.value" *ngFor="let pair of pairs">
+      {{ pair.key }}
+    </option>
+  </select>
+</div>

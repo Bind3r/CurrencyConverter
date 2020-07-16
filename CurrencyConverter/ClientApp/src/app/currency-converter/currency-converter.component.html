@@ -1,0 +1,21 @@
+<h1>Currency Converter</h1>
+<div class="container">
+  <div class="calendar">
+    <h2 class="badge badge-secondary">Currencies from: {{ currenciesDate }}</h2>
+  </div>
+  <h1 class="badge badge-secondary"> Currency Ratio 1 to {{ ratioDisplay$ | async }} </h1>
+  <div class="d-flex flex-row">
+    <div>
+      <div class="currency-input d-flex">
+        <input type="number" (input)="onAmountChange($event.target.value)" [value]="amount | async" />
+        <app-drop-down (onValueChanged)="onFromCurrencyChange($event)" [pairs]="currencies">
+        </app-drop-down>
+      </div>
+      <div class="currency-input d-flex">
+        <input type="number" [value]="conversionResult$ | async" disabled />
+        <app-drop-down (onValueChanged)="onToCurrencyChange($event)" [pairs]="currencies">
+        </app-drop-down>
+      </div>
+    </div>
+  </div>
+</div>
