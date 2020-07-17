@@ -1,6 +1,9 @@
 <h1>Currency Converter</h1>
 <div class="container">
   <div class="calendar">
+    <app-calendar [minDate]="calendarMinDate" [maxDate]="calendarMaxDate">
+    </app-calendar>
+    <br />
     <h2 class="badge badge-secondary">Currencies from: {{ currenciesDate }}</h2>
   </div>
   <h1 class="badge badge-secondary"> Currency Ratio 1 to {{ ratioDisplay$ | async }} </h1>

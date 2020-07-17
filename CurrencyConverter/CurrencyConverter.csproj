@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\interfaces\IAlert.ts" />
+    <None Remove="ClientApp\src\interfaces\ICalendar.ts" />
     <None Remove="ClientApp\src\interfaces\ICurrency.ts" />
     <None Remove="ClientApp\src\interfaces\IKeyValuePair.ts" />
     <None Remove="ClientApp\src\interfaces\ISingleDayCurrencies.ts" />
@@ -37,6 +38,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\interfaces\IAlert.ts" />
+    <TypeScriptCompile Include="ClientApp\src\interfaces\ICalendar.ts" />
     <TypeScriptCompile Include="ClientApp\src\interfaces\ICurrency.ts" />
     <TypeScriptCompile Include="ClientApp\src\interfaces\IKeyValuePair.ts" />
     <TypeScriptCompile Include="ClientApp\src\interfaces\ISingleDayCurrencies.ts" />

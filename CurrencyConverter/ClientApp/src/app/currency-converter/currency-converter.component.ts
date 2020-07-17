@@ -3,10 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, interval, Subscription } from 'rxjs';
 import { map } from "rxjs/operators";
 import { environment } from '../../environments/environment';
-import { IAlert } from '../../interfaces/IAlert';
+import { ICalendar } from '../../interfaces/ICalendar';
 import { IKeyValuePair } from '../../interfaces/IKeyValuePair';
 import { ISingleDayCurrencies } from '../../interfaces/ISingleDayCurrencies';
-import { error } from 'protractor';
 
 @Component({
   selector: 'app-currency-converter',
@@ -18,6 +17,9 @@ export class CurrencyConverterComponent implements OnInit {
   private currenciesRefreshInterval = interval(environment.currencyRefreshIntervalInMinutes * 60 * 1000);
   private baseApiUrl = environment.apiUrl;
   private refreshIntervalSubscription: Subscription;
+
+  private calendarMinDate: ICalendar;
+  private calendarMaxDate: ICalendar;
 
   private currenciesDate: string;
   private currencies: IKeyValuePair[];
@@ -34,6 +36,7 @@ export class CurrencyConverterComponent implements OnInit {
       map(([ratioFrom, ratioTo]) => this.calculateSelectedCurrenciesRatio(ratioFrom, ratioTo)));
 
   constructor(private httpClient: HttpClient) {
+    this.setupCalendar();
     this.getDailyCurrency();
     //this.getOldCurrency("2020-07-08");
   };
@@ -56,6 +59,17 @@ export class CurrencyConverterComponent implements OnInit {
 
   onAmountChange(value: number) {
     this.amount.next(value);
+  }
+
+  private setupCalendar() {
+    this.calendarMaxDate = { year: 1999, month: 1, day: 4 } as ICalendar;
+
+    let today = new Date();
+    this.calendarMaxDate = {
+      year: today.getFullYear(),
+      month: today.getMonth() + 1,
+      day: today.getDate()
+    } as ICalendar;
   }
 
   private calculateResult(ratioFrom: number, ratioTo: number, amount: number) {
