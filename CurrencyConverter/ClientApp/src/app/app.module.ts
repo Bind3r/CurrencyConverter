@@ -5,9 +5,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
+import { CalendarComponent } from './calendar/calendar.component';
 import { CurrencyConverterComponent } from './currency-converter/currency-converter.component';
 import { DropDownComponent } from './drop-down/drop-down.component';
-import { CalendarComponent } from './calendar/calendar.component';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { CalendarComponent } from './calendar/calendar.component';
     CurrencyConverterComponent,
     DropDownComponent,
     CalendarComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

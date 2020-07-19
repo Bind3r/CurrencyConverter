@@ -1,0 +1,15 @@
+.alert{
+    display: flex;
+    flex-direction: row;
+    margin: 8px 0 8px 0;
+}
+
+.warning {
+  background-color: #f7c80f;
+  color: #000000;
+}
+
+.error {
+  background-color: #ff0000;
+  color: #ffffff;
+}

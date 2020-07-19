@@ -59,7 +59,7 @@
 
         private void AddEurCurrency(SingleDayCurrencies result)
         {
-            if (!result.Currencies.Any() || result.Currencies.Any(x => x.Code.Equals("EUR", StringComparison.OrdinalIgnoreCase)))
+            if (result == null || !result.Currencies.Any() || result.Currencies.Any(x => x.Code.Equals("EUR", StringComparison.OrdinalIgnoreCase)))
             {
                 return;
             }

@@ -1,3 +1,29 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #3E5C76;
+  color: white;
+  font-weight: 600;
+}
+
+  .toolbar h1 {
+    margin: 4px 10px 8px 30px;
+  }
+
+.background {
+  display: flex;
+  flex: 1;
+  background-color: #F9F7F0;
+}
+
+.container {
+  background-color: #F3F0E2;
+  padding-top: 30px;
+}
+
 .currency-input {
   margin-top: 10px;
   margin-bottom: 10px;

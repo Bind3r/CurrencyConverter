@@ -1,0 +1,3 @@
+<div class="alert" *ngFor="let alert of alerts; index as i" [ngClass]="alert.type" (click)="onAlertClick(i)">
+  {{ alert.text }}
+</div>

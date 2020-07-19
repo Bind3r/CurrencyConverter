@@ -9,17 +9,17 @@
     [ApiController]
     public class CurrencyController : ControllerBase
     {
-        ICurrencyFetchingService _currencyHandlingService;
+        ICurrencyFetchingService _currencyFetchingService;
 
-        public CurrencyController(ICurrencyFetchingService currencyHandlingService)
+        public CurrencyController(ICurrencyFetchingService currencyFetchingService)
         {
-            _currencyHandlingService = currencyHandlingService;
+            _currencyFetchingService = currencyFetchingService;
         }
 
         [HttpGet, HttpGet("{date}")]
         public IActionResult GetCurrency(DateTime? date)
         {
-            if (_currencyHandlingService.TryGetCurrencies(date, out SingleDayCurrencies currencies, out string error))
+            if (_currencyFetchingService.TryGetCurrencies(date, out SingleDayCurrencies currencies, out string error))
             {
                 return Ok(currencies);
             }

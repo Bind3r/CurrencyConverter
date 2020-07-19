@@ -1,23 +1,36 @@
-<h1>Currency Converter</h1>
-<div class="container">
-  <div class="calendar">
-    <app-calendar [minDate]="calendarMinDate" [maxDate]="calendarMaxDate">
-    </app-calendar>
-    <br />
-    <h2 class="badge badge-secondary">Currencies from: {{ currenciesDate }}</h2>
-  </div>
-  <h1 class="badge badge-secondary"> Currency Ratio 1 to {{ ratioDisplay$ | async }} </h1>
-  <div class="d-flex flex-row">
-    <div>
-      <div class="currency-input d-flex">
-        <input type="number" (input)="onAmountChange($event.target.value)" [value]="amount | async" />
-        <app-drop-down (onValueChanged)="onFromCurrencyChange($event)" [pairs]="currencies">
-        </app-drop-down>
-      </div>
-      <div class="currency-input d-flex">
-        <input type="number" [value]="conversionResult$ | async" disabled />
-        <app-drop-down (onValueChanged)="onToCurrencyChange($event)" [pairs]="currencies">
-        </app-drop-down>
+<div class="toolbar">
+  <h1>Currency Converter</h1>
+</div>
+
+<div class="background">
+  <div class="container">
+    <div *ngIf="alerts">
+      <app-alert (onAlertClicked)="onAlertClick($event)" [alerts]="alerts">
+      </app-alert>
+    </div>
+
+    <div class="calendar">
+      <app-calendar (onDateSelected)="onCalendarDateSelect($event)"
+                    [minDate]="calendarMinDate"
+                    [maxDate]="calendarMaxDate">
+      </app-calendar>
+    </div>
+
+    <div *ngIf="currencies">
+      <h2 class="badge badge-secondary">Currencies from: {{ currenciesDate }}</h2>
+      <br />
+      <h1 class="badge badge-secondary"> Currency Ratio 1 to {{ ratioDisplay$ | async }} </h1>
+      <div class="d-flex flex-column">
+        <div class="currency-input d-flex">
+          <input type="number" (input)="onAmountChange($event.target.value)" [value]="amount | async" />
+          <app-drop-down (onValueChanged)="onFromCurrencyChange($event)" [pairs]="currencies">
+          </app-drop-down>
+        </div>
+        <div class="currency-input d-flex">
+          <input type="number" [value]="conversionResult$ | async" disabled />
+          <app-drop-down (onValueChanged)="onToCurrencyChange($event)" [pairs]="currencies">
+          </app-drop-down>
+        </div>
       </div>
     </div>
   </div>

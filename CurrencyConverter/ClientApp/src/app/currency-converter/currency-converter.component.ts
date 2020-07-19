@@ -2,7 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, interval, Subscription } from 'rxjs';
 import { map } from "rxjs/operators";
+import { AlertType } from '../../enums/AlertType';
 import { environment } from '../../environments/environment';
+import { IAlert } from '../../interfaces/IAlert';
 import { ICalendar } from '../../interfaces/ICalendar';
 import { IKeyValuePair } from '../../interfaces/IKeyValuePair';
 import { ISingleDayCurrencies } from '../../interfaces/ISingleDayCurrencies';
@@ -14,8 +16,8 @@ import { ISingleDayCurrencies } from '../../interfaces/ISingleDayCurrencies';
 })
 
 export class CurrencyConverterComponent implements OnInit {
-  private currenciesRefreshInterval = interval(environment.currencyRefreshIntervalInMinutes * 60 * 1000);
   private baseApiUrl = environment.apiUrl;
+  private currenciesRefreshInterval = interval(environment.currencyRefreshIntervalInMinutes * 60 * 1000);
   private refreshIntervalSubscription: Subscription;
 
   private calendarMinDate: ICalendar;
@@ -23,6 +25,8 @@ export class CurrencyConverterComponent implements OnInit {
 
   private currenciesDate: string;
   private currencies: IKeyValuePair[];
+  private alerts: IAlert[];
+
   private ratioFrom = new BehaviorSubject<number>(1);
   private ratioTo = new BehaviorSubject<number>(1);
   private amount = new BehaviorSubject<number>(1);
@@ -37,12 +41,11 @@ export class CurrencyConverterComponent implements OnInit {
 
   constructor(private httpClient: HttpClient) {
     this.setupCalendar();
-    this.getDailyCurrency();
-    //this.getOldCurrency("2020-07-08");
+    this.getCurrencies();
   };
 
   ngOnInit(): void {
-    this.refreshIntervalSubscription = this.currenciesRefreshInterval.subscribe(x => this.getDailyCurrency());
+    this.refreshIntervalSubscription = this.currenciesRefreshInterval.subscribe(x => this.getCurrencies());
   }
 
   ngOnDestroy(): void {
@@ -61,8 +64,25 @@ export class CurrencyConverterComponent implements OnInit {
     this.amount.next(value);
   }
 
+  onCalendarDateSelect(date: ICalendar) {
+    this.getCurrencies(`${date.year}-${date.month}-${date.day}`);
+  }
+
+  onAlertClick(index: number) {
+    let selectedAlert = this.alerts[index];
+    this.alerts = this.alerts.filter(x => x !== selectedAlert);
+  }
+
+  private addAlert(type: AlertType, text: string) {
+    if (this.alerts === undefined) {
+      this.alerts = [] as IAlert[];
+    }
+
+    this.alerts.push({ type: type, text: text } as IAlert);
+  }
+
   private setupCalendar() {
-    this.calendarMaxDate = { year: 1999, month: 1, day: 4 } as ICalendar;
+    this.calendarMinDate = { year: 1999, month: 1, day: 4 };
 
     let today = new Date();
     this.calendarMaxDate = {
@@ -80,27 +100,25 @@ export class CurrencyConverterComponent implements OnInit {
     return Math.round((1 / ratioFrom) / (1 / ratioTo) * 100) / 100;
   }
 
-  private getDailyCurrency() {
-    return this.httpClient.get<ISingleDayCurrencies>(this.baseApiUrl + '/currency').subscribe(result => {
-      this.currenciesDate = result.date;
-      this.currencies = result.currencies.map(cur => {
-        return {
-          key: cur.code,
-          value: cur.ratio
-        } as IKeyValuePair
-      }, error => alert("No Currencies were found"))
-    }, error => alert("Failed to fetch currencies"));
-  }
+  private getCurrencies(date?: string) {
+    let url = `${this.baseApiUrl}/currency`;
+    if (date) {
+      url += `/${date}`;
+    }
 
-  private getOldCurrency(date: string) {
-    return this.httpClient.get<ISingleDayCurrencies>(this.baseApiUrl + '/currency/' + date).subscribe(result => {
+    return this.httpClient.get<ISingleDayCurrencies>(url).subscribe(result => {
+      if (result === null) {
+        this.addAlert(AlertType.Warning, "No Currencies Found");
+        return;
+      }
+
       this.currenciesDate = result.date;
       this.currencies = result.currencies.map(cur => {
         return {
           key: cur.code,
           value: cur.ratio
         } as IKeyValuePair
-      }, error => alert("No Currencies were found"))
-    }, error => alert("Failed to fetch currencies"));
+      }, error => this.addAlert(AlertType.Error, "Failed to handle Currencies"));
+    }, error => this.addAlert(AlertType.Error, "Failed to fetch Currencies"));
   }
 }

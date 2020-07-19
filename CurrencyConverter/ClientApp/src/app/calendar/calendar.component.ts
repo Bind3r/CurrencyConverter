@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { ICalendar } from '../../interfaces/ICalendar';
 
 @Component({
@@ -17,7 +18,11 @@ export class CalendarComponent implements OnInit {
   ngOnInit() {
   }
 
-  onDateSelect(date: ICalendar) {
-    this.onDateSelected.emit(date);
+  onDateSelection(date: NgbDate) {
+    this.onDateSelected.emit({
+      day: date.day,
+      month: date.month,
+      year: date.year
+    } as ICalendar);
   }
 }

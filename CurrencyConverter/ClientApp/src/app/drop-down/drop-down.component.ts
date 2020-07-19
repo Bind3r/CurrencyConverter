@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IKeyValuePair } from '../../interfaces/IKeyValuePair';
 
 @Component({
   selector: 'app-drop-down',
@@ -17,8 +16,8 @@ export class DropDownComponent implements OnInit {
   ngOnInit() {
   }
 
+
   onValueChange(value: any) {
     this.onValueChanged.emit(value)
   }
-
 }

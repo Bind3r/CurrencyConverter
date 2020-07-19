@@ -1,5 +1,6 @@
 <div>
-  <ngb-datepicker (change)="onDateSelect($event.target.value)"
+  <ngb-datepicker class="calendar"
+                  (dateSelect)="onDateSelection($event)"
                   [minDate]="minDate"
                   [maxDate]="maxDate">
   </ngb-datepicker>
