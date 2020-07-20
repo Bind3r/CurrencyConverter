@@ -119,6 +119,9 @@ export class CurrencyConverterComponent implements OnInit {
           value: cur.ratio
         } as IKeyValuePair
       }, error => this.addAlert(AlertType.Error, "Failed to handle Currencies"));
+
+      this.ratioFrom.next(this.currencies[0].value);
+      this.ratioTo.next(this.currencies[0].value);
     }, error => this.addAlert(AlertType.Error, "Failed to fetch Currencies"));
   }
 }
